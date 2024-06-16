@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">TravelLabel</string>
+    <string name="title_activity_maps">MapsActivity</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="login">Login</string>
+    <string name="signup">Signup</string>
+    <string name="REGISTER">REGISTER</string>
+    <string name="LOGIN">WELCOME</string>
+    <string name="yesAccount">Sudah Memiliki Akun? Login Sekarang</string>
+    <string name="noAccount">Belum Memiliki Akun? Signup Sekarang</string>
+    <string name="erroremail">Tolong Masukkan Email Dengan Benar</string>
+    <string name="errorusername">Tolong Masukkan Username Dengan Benar</string>
+    <string name="errorpassword">Tolong Masukkan Password Dengan Benar</string>
+    <string name="messageRegister">Selamat Selamat</string>
+    <string name="messageTitle">TravelLabel</string>
+    <string name="messageButton">Lanjut</string>
+    <string name="textNoLocation">Tidak Ada Info Yang Dapat Ditampilkan</string>
+    <string name="namaTempatWisata">Nama Tempat Wisata</string>
+    <string name="descTempatWisata">Deskripsi Tempat Wisata Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla pretium, ligula in vehicula volutpat, neque mauris facilisis quam, eget pharetra mi diam at nisi. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</string>
+    <string name="review">Review</string>
+    <string name="namaUser">Nama User</string>
+    <string name="descReview">Deskripsi Review Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla pretium, ligula in vehicula volutpat, neque mauris facilisis quam, eget pharetra mi diam at nisi. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</string>
+    <string name="addReview">Tambah Review</string>
+    <string name="noLocation">Tidak Ada Info Yang Dapat Ditampilkan</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="loginsuccess">Login Success</string>
+    <string name="loginfailed">Login Failed</string>
+    <string name="logout">Logout</string>
+</resources>
