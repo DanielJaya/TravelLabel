@@ -1,15 +1,26 @@
 package com.example.travellabel.View.Map
 
+import android.content.ContentValues.TAG
 import android.content.Intent
+import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
+import com.example.travellabel.Data.pref.Output
 import com.example.travellabel.R
+import com.example.travellabel.View.AddLocation.AddLocationActivity
 import com.example.travellabel.View.Bookmark.BookmarkActivity
 import com.example.travellabel.View.Forum.ForumActivity
 import com.example.travellabel.View.Fragment.DescLocationFragment.DescLocationFragment
 import com.example.travellabel.View.Fragment.NoLocationFragment.NoLocationFragment
 import com.example.travellabel.View.Main.MainActivity
+import com.example.travellabel.ViewModelFactory
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -18,11 +29,18 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.example.travellabel.databinding.ActivityMapsBinding
+import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import kotlinx.coroutines.launch
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
+    private val viewModel by viewModels<MapsViewModel>{
+        ViewModelFactory.getInstance(this)
+    }
+
+    private val boundsBuilder = LatLngBounds.Builder()
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMapsBinding
     private var isMarkerClicked = false
@@ -61,24 +79,20 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
+        fabAddLoc()
     }
 
     private fun updateMapInteraction(isMapInteractable: Boolean) {
         mMap.uiSettings.setAllGesturesEnabled(isMapInteractable)
     }
 
-
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
+        mMap.uiSettings.isZoomControlsEnabled = true
+        mMap.uiSettings.isIndoorLevelPickerEnabled = true
+        mMap.uiSettings.isCompassEnabled = true
+        mMap.uiSettings.isMapToolbarEnabled = true
 
         // Add a marker in Sydney and move the camera
         val sydney = LatLng(-34.0, 151.0)
@@ -93,7 +107,71 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             showFragmentLocation()
             true
         }
+
+        getLocPermission()
+        getLocation()
     }
+
+    private fun getLocPermission(){
+        if(ContextCompat.checkSelfPermission(
+            this.applicationContext,
+            android.Manifest.permission.ACCESS_FINE_LOCATION
+        )== PackageManager.PERMISSION_GRANTED
+            ){
+                mMap.isMyLocationEnabled = true
+        }else{
+            requestPermissionLauncher.launch(android.Manifest.permission.ACCESS_FINE_LOCATION)
+        }
+    }
+
+    private fun getLocation() {
+        lifecycleScope.launch {
+            viewModel.getLocation().observe(this@MapsActivity) { location ->
+                location?.let {
+                    when (it) {
+                        is Output.Loading -> Log.d(TAG, "getLocation: Loading")
+                        is Output.Success -> {
+                            it.value.locations.forEach { loc ->
+                                val lat = loc.lat?.toDoubleOrNull()
+                                val lon = loc.lon?.toDoubleOrNull()
+                                if (lat != null && lon != null) {
+                                    val latLng = LatLng(lat, lon)
+                                    mMap.addMarker(
+                                        MarkerOptions()
+                                            .position(latLng)
+                                            .title(loc.label)
+                                            .snippet(loc.description)
+                                    )
+                                    boundsBuilder.include(latLng)
+                                }
+                            }
+
+                            mMap.animateCamera(
+                                CameraUpdateFactory.newLatLngBounds(
+                                    boundsBuilder.build(),
+                                    resources.displayMetrics.widthPixels,
+                                    resources.displayMetrics.heightPixels,
+                                    300
+                                )
+                            )
+                        }
+
+                        is Output.Error -> showToast(it.error)
+                    }
+                }
+            }
+        }
+    }
+
+
+    private fun showToast(message: String?) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    private val requestPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (isGranted) getLocPermission()
+        }
 
     private fun showFragmentLocation() {
         supportFragmentManager.beginTransaction()
@@ -105,5 +183,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         supportFragmentManager.beginTransaction()
             .replace(R.id.bottomSheetContainer, NoLocationFragment())
             .commit()
+    }
+
+    private fun fabAddLoc() {
+        binding.fabAddLoc.setOnClickListener {
+            startActivity(Intent(this@MapsActivity, AddLocationActivity::class.java))
+        }
     }
 }

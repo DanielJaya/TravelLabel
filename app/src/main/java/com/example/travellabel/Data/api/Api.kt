@@ -22,7 +22,7 @@ class Api {
                 .addInterceptor(authInterceptor)
                 .build()
             val retrofit = Retrofit.Builder()
-                .baseUrl("https://travellabel-api-x43zd4oh5q-et.a.run.app/api/v1/auth/")
+                .baseUrl("https://travellabel-api-x43zd4oh5q-et.a.run.app/api/v1/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build()

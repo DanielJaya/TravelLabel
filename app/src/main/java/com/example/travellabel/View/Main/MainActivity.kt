@@ -31,7 +31,8 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 
-        getSession()
+        navbar()
+        //getSession()
     }
 
     private fun navbar(){
@@ -64,6 +65,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /*
     private fun getSession() {
         viewModel.getSession().observe(this) { user ->
             if (!user.isLogin) {
@@ -78,5 +80,7 @@ class MainActivity : AppCompatActivity() {
         })
         finish()
     }
+
+     */
 
 }

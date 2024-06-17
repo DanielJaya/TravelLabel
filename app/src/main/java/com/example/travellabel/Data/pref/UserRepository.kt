@@ -1,10 +1,13 @@
 package com.example.travellabel.Data.pref
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.liveData
 import com.example.travellabel.Data.api.ApiService
 import com.example.travellabel.Data.api.LoginRequest
 import com.example.travellabel.Data.api.RegisterRequest
+import com.example.travellabel.Response.LocationResponse
 import com.example.travellabel.Response.LoginResponse
 import com.example.travellabel.Response.RegisterResponse
 import kotlinx.coroutines.flow.Flow
@@ -31,8 +34,22 @@ class UserRepository private constructor(
         return userPreference.getSession()
     }
 
-    suspend fun login(request: LoginRequest): LoginResponse {
+    suspend fun login(request: LoginRequest): Call<LoginResponse> {
         return apiService.login(request)
+    }
+
+    suspend fun getLocation() : LiveData<Output<LocationResponse>> = liveData {
+        emit(Output.Loading)
+        try {
+            val response = apiService.getLocation()
+            if (response.status == "200") {
+                emit(Output.Success(response))
+            } else {
+                emit(Output.Error(response.message.toString()))
+            }
+        } catch (e: Exception){
+            emit(Output.Error(e.message.toString()))
+        }
     }
 
     companion object {

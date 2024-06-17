@@ -26,4 +26,6 @@
     <string name="loginsuccess">Login Success</string>
     <string name="loginfailed">Login Failed</string>
     <string name="logout">Logout</string>
+    <string name="addLoc">Tambah Lokasi</string>
+
 </resources>

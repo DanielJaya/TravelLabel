@@ -12,7 +12,6 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.travellabel.Data.pref.UserModel
 import com.example.travellabel.R
-import com.example.travellabel.Response.LoginResponse
 import com.example.travellabel.Response.RegisterResponse
 import com.example.travellabel.View.Main.MainActivity
 import com.example.travellabel.View.Signup.SignupActivity
@@ -23,69 +22,95 @@ import kotlinx.coroutines.launch
 import retrofit2.HttpException
 
 class LoginActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityLoginBinding
+    private var _binding: ActivityLoginBinding? = null
     private val viewModel by viewModels<LoginViewModel> {
         ViewModelFactory.getInstance(this)
     }
 
+    private val binding get() = _binding!!
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityLoginBinding.inflate(layoutInflater)
+        _binding = ActivityLoginBinding.inflate(layoutInflater)
+        enableEdgeToEdge()
         setContentView(binding.root)
 
-        submitLogin()
+            //submitLogin()
     }
 
-    private fun submitLogin() {
+    /*
+    private fun submitLogin(){
         binding.loginButton.setOnClickListener {
             val identifier = binding.edLoginUsername.text.toString().trim()
             val password = binding.edLoginPassword.text.toString().trim()
 
             if (identifier.isEmpty()) {
                 binding.usernameEditTextLayout.error = getString(R.string.errorusername)
-            } else if (password.isEmpty()) {
-                binding.passwordEditTextLayout.error = getString(R.string.errorpassword)
-            } else {
-                binding.usernameEditTextLayout.error = null
-                binding.passwordEditTextLayout.error = null
-
-                lifecycleScope.launch {
-                    try {
-                        viewModel.login(identifier, password,
-                            onResult = { response ->
-                                showToast(response?.message)
-                                if (response?.status == "OK") {
-                                    // Save session
-                                    val user = UserModel(
-                                        token = response.accessToken,
-                                        name = identifier,
-                                        userId = "",
-                                        status = response.status,
-                                        isLogin = true
-                                    )
-                                    lifecycleScope.launch {
-                                        viewModel.saveSession(user)
-                                    }
-                                    val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                                    startActivity(intent)
-                                    finish()
-                                }
-                            },
-                            onError = { errorMessage ->
-                                showToast(errorMessage)
-                            }
-                        )
-                    } catch (e: HttpException) {
-                        val errorBody = e.response()?.errorBody()?.string()
-                        val errorResponse = Gson().fromJson(errorBody, LoginResponse::class.java)
-                        showToast(errorResponse.message)
-                    }
-                }
+                return@setOnClickListener
             }
+
+            if (password.isEmpty()) {
+                binding.passwordEditTextLayout.error = getString(R.string.errorpassword)
+                return@setOnClickListener
+            }
+            binding.usernameEditTextLayout.error = null
+            binding.passwordEditTextLayout.error = null
+
+            try {
+                viewModel.login(identifier, password)
+            } catch (e: HttpException) {
+                val errorBody = e.response()?.errorBody()?.string()
+                val errorResponse = Gson().fromJson(errorBody, RegisterResponse::class.java)
+                errorResponse.message?.let { it1 -> showToast(it1) }
+                return@setOnClickListener
+            }
+
+        }
+
+        viewModel.loginResult.observe(this) { result ->
+            Log.e("LoginActivity", "error: $result")
+            if (result.status=="BAD_REQUEST") {
+                // Login failed, show feedback to the user
+                showToast(getString(R.string.loginfailed))
+            } else {
+                // Login successful, save session
+                showToast(getString(R.string.loginsuccess))
+                saveSession(
+                    UserModel(
+                        result?.accessToken.toString(),
+                        result?.message.toString(),
+                        result?.refreshToken.toString(),
+                        result?.status.toString(),
+                        true
+                    )
+                )
+            }
+        }
+
+        binding.noAccount.setOnClickListener {
+            val intent = Intent(this@LoginActivity, SignupActivity::class.java)
+            ViewModelFactory.clearInstance()
+            startActivity(intent)
+        }
+
+    }
+
+    private fun saveSession(session: UserModel) {
+        lifecycleScope.launch {
+            viewModel.saveSession(session)
+            val intent = Intent(this@LoginActivity, MainActivity::class.java)
+            ViewModelFactory.clearInstance()
+            startActivity(intent)
         }
     }
 
-    private fun showToast(message: String?) {
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
+
+    private fun showToast(message : String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
+     */
 }
