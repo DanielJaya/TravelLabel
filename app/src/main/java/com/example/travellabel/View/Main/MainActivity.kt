@@ -2,11 +2,13 @@ package com.example.travellabel.View.Main
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.Observer
 import com.example.travellabel.View.Login.LoginActivity
 import com.example.travellabel.R
 import com.example.travellabel.View.Bookmark.BookmarkActivity
@@ -19,24 +21,25 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
 
-    private var _binding : ActivityMainBinding? = null
+    private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
     private val viewModel by viewModels<MainActivityViewModel> {
         ViewModelFactory.getInstance(this)
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_main)
+
+        _binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         navbar()
-        //getSession()
+        getSession()
     }
 
-    private fun navbar(){
-        val navBottom = findViewById<BottomNavigationView>(R.id.navBottom)
+    private fun navbar() {
+        val navBottom = binding.navBottom
         navBottom.selectedItemId = R.id.home
 
         navBottom.setOnItemSelectedListener { item ->
@@ -65,22 +68,24 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    /*
     private fun getSession() {
         viewModel.getSession().observe(this) { user ->
+            Log.d("MainActivity", "User session observed: $user")
             if (!user.isLogin) {
                 navigateToWelcomeActivity()
             }
         }
     }
 
-    private fun navigateToWelcomeActivity(){
+
+    private fun navigateToWelcomeActivity() {
         startActivity(Intent(this, WelcomeActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
         })
         finish()
     }
-
-     */
-
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
 }

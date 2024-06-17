@@ -11,6 +11,7 @@ import com.example.travellabel.Response.LocationResponse
 import com.example.travellabel.Response.LoginResponse
 import com.example.travellabel.Response.RegisterResponse
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -31,8 +32,12 @@ class UserRepository private constructor(
     }
 
     fun getSession(): Flow<UserModel> {
-        return userPreference.getSession()
+        return userPreference.getSession().map { user ->
+            Log.d("UserRepository", "getSession: $user")
+            user
+        }
     }
+
 
     suspend fun login(request: LoginRequest): Call<LoginResponse> {
         return apiService.login(request)

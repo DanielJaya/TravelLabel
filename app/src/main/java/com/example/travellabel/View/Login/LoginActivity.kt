@@ -9,7 +9,9 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import com.example.travellabel.Data.api.LoginRequest
 import com.example.travellabel.Data.pref.UserModel
 import com.example.travellabel.R
 import com.example.travellabel.Response.RegisterResponse
@@ -19,6 +21,7 @@ import com.example.travellabel.ViewModelFactory
 import com.example.travellabel.databinding.ActivityLoginBinding
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import retrofit2.HttpException
 
 class LoginActivity : AppCompatActivity() {
@@ -35,16 +38,16 @@ class LoginActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(binding.root)
 
-            //submitLogin()
+            submitLogin()
     }
 
-    /*
-    private fun submitLogin(){
-        binding.loginButton.setOnClickListener {
-            val identifier = binding.edLoginUsername.text.toString().trim()
-            val password = binding.edLoginPassword.text.toString().trim()
 
-            if (identifier.isEmpty()) {
+    private fun submitLogin() {
+        binding.loginButton.setOnClickListener {
+            val username = binding.edLoginUsername.text.toString()
+            val password = binding.edLoginPassword.text.toString()
+
+            if (username.isEmpty()) {
                 binding.usernameEditTextLayout.error = getString(R.string.errorusername)
                 return@setOnClickListener
             }
@@ -56,20 +59,13 @@ class LoginActivity : AppCompatActivity() {
             binding.usernameEditTextLayout.error = null
             binding.passwordEditTextLayout.error = null
 
-            try {
-                viewModel.login(identifier, password)
-            } catch (e: HttpException) {
-                val errorBody = e.response()?.errorBody()?.string()
-                val errorResponse = Gson().fromJson(errorBody, RegisterResponse::class.java)
-                errorResponse.message?.let { it1 -> showToast(it1) }
-                return@setOnClickListener
-            }
-
+            // Memanggil fungsi login dari ViewModel
+            viewModel.login(LoginRequest(username, password))
         }
 
         viewModel.loginResult.observe(this) { result ->
-            Log.e("LoginActivity", "error: $result")
-            if (result.status=="BAD_REQUEST") {
+            Log.e("LoginActivity", "Login result: $result")
+            if (result == null || result.status.isEmpty()) {
                 // Login failed, show feedback to the user
                 showToast(getString(R.string.loginfailed))
             } else {
@@ -77,22 +73,15 @@ class LoginActivity : AppCompatActivity() {
                 showToast(getString(R.string.loginsuccess))
                 saveSession(
                     UserModel(
-                        result?.accessToken.toString(),
-                        result?.message.toString(),
-                        result?.refreshToken.toString(),
-                        result?.status.toString(),
+                        result.status,
+                        result.message,
+                        result.accessToken,
+                        result.refreshToken ?: "", // Pastikan refreshToken tidak null
                         true
                     )
                 )
             }
         }
-
-        binding.noAccount.setOnClickListener {
-            val intent = Intent(this@LoginActivity, SignupActivity::class.java)
-            ViewModelFactory.clearInstance()
-            startActivity(intent)
-        }
-
     }
 
     private fun saveSession(session: UserModel) {
@@ -101,16 +90,16 @@ class LoginActivity : AppCompatActivity() {
             val intent = Intent(this@LoginActivity, MainActivity::class.java)
             ViewModelFactory.clearInstance()
             startActivity(intent)
+            finish()
         }
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
     }
-
-    private fun showToast(message : String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-    }
-     */
 }

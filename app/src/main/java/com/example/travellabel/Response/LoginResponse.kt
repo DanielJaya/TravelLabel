@@ -11,8 +11,8 @@ data class LoginResponse(
 	val message: String,
 
 	@field:SerializedName("refreshToken")
-	val refreshToken: String? = null,
+	val refreshToken: String,
 
 	@field:SerializedName("status")
-	val status: String? = null
+	val status: String
 )

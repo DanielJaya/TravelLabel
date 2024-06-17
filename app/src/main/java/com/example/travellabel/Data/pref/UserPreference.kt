@@ -16,9 +16,10 @@ class UserPreference private constructor(private val dataStore : DataStore<Prefe
 
     suspend fun saveSession(user: UserModel) {
         dataStore.edit { preferences ->
-            preferences[TOKEN_KEY] = user.token
-            preferences[NAME_KEY] = user.name
-            preferences[USER_ID] = user.userId
+            preferences[STATUS_KEY] = user.status
+            preferences[MESSAGE_KEY] = user.message
+            preferences[ACCESS_KEY] = user.accessToken
+            preferences[REFRESH_KEY] = user.refreshToken
             preferences[IS_LOGIN_KEY] = true
         }
     }
@@ -26,10 +27,10 @@ class UserPreference private constructor(private val dataStore : DataStore<Prefe
     fun getSession(): Flow<UserModel> {
         return dataStore.data.map { preferences ->
             UserModel(
-                preferences[TOKEN_KEY].toString(),
-                preferences[NAME_KEY].toString(),
-                preferences[USER_ID].toString(),
                 preferences[STATUS_KEY].toString(),
+                preferences[MESSAGE_KEY].toString(),
+                preferences[ACCESS_KEY].toString(),
+                preferences[REFRESH_KEY].toString(),
                 preferences[IS_LOGIN_KEY] ?: false
             )
         }
@@ -39,10 +40,10 @@ class UserPreference private constructor(private val dataStore : DataStore<Prefe
         @Volatile
         private var INSTANCE: UserPreference? = null
 
-        private val USER_ID = stringPreferencesKey("userId")
-        private val NAME_KEY = stringPreferencesKey("name")
-        private val TOKEN_KEY = stringPreferencesKey("token")
         private val STATUS_KEY = stringPreferencesKey("status")
+        private val MESSAGE_KEY = stringPreferencesKey("message")
+        private val ACCESS_KEY = stringPreferencesKey("accessToken")
+        private val REFRESH_KEY = stringPreferencesKey("refreshToken")
         private val IS_LOGIN_KEY = booleanPreferencesKey("isLogin")
 
         fun getInstance(dataStore: DataStore<Preferences>) :UserPreference {
