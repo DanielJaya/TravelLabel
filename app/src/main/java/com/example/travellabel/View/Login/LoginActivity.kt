@@ -65,7 +65,7 @@ class LoginActivity : AppCompatActivity() {
 
         viewModel.loginResult.observe(this) { result ->
             Log.e("LoginActivity", "Login result: $result")
-            if (result == null || result.status.isEmpty()) {
+            if (result == null || result.message == "Invalid credentials") {
                 // Login failed, show feedback to the user
                 showToast(getString(R.string.loginfailed))
             } else {

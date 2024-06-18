@@ -57,6 +57,11 @@ class UserRepository private constructor(
         }
     }
 
+    suspend fun logout() {
+        userPreference.logout()
+    }
+
+
     companion object {
         @Volatile
         private var instance: UserRepository? = null

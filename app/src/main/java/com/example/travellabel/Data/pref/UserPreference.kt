@@ -36,6 +36,16 @@ class UserPreference private constructor(private val dataStore : DataStore<Prefe
         }
     }
 
+    suspend fun logout() {
+        dataStore.edit { preferences ->
+            preferences[STATUS_KEY] = ""
+            preferences[MESSAGE_KEY] = ""
+            preferences[ACCESS_KEY] = ""
+            preferences[REFRESH_KEY] = ""
+            preferences[IS_LOGIN_KEY] = false
+        }
+    }
+
     companion object {
         @Volatile
         private var INSTANCE: UserPreference? = null

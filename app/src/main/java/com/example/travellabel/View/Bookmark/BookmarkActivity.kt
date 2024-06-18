@@ -10,6 +10,7 @@ import com.example.travellabel.R
 import com.example.travellabel.View.Forum.ForumActivity
 import com.example.travellabel.View.Main.MainActivity
 import com.example.travellabel.View.Map.MapsActivity
+import com.example.travellabel.View.Profile.ProfileActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class BookmarkActivity : AppCompatActivity() {
@@ -43,6 +44,11 @@ class BookmarkActivity : AppCompatActivity() {
                 }
                 R.id.forum -> {
                     val intent = Intent(this, ForumActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+                R.id.profile -> {
+                    val intent = Intent(this, ProfileActivity::class.java)
                     startActivity(intent)
                     true
                 }

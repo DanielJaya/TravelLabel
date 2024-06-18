@@ -9,6 +9,7 @@ import com.example.travellabel.Data.pref.dataStore
 import com.example.travellabel.View.Login.LoginViewModel
 import com.example.travellabel.View.Main.MainActivityViewModel
 import com.example.travellabel.View.Map.MapsViewModel
+import com.example.travellabel.View.Profile.ProfileViewModel
 import com.example.travellabel.View.Signup.SignupViewModel
 import com.example.travellabel.di.injection
 
@@ -20,6 +21,7 @@ class ViewModelFactory(private val repository: UserRepository) : ViewModelProvid
             modelClass.isAssignableFrom(SignupViewModel::class.java) -> SignupViewModel(repository)
             modelClass.isAssignableFrom(LoginViewModel::class.java) -> LoginViewModel(repository)
             modelClass.isAssignableFrom(MapsViewModel::class.java) -> MapsViewModel(repository)
+            modelClass.isAssignableFrom(ProfileViewModel::class.java) -> ProfileViewModel(repository)
             else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }
         @Suppress("UNCHECKED_CAST")

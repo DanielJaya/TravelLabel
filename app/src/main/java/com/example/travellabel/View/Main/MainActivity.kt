@@ -14,6 +14,7 @@ import com.example.travellabel.R
 import com.example.travellabel.View.Bookmark.BookmarkActivity
 import com.example.travellabel.View.Forum.ForumActivity
 import com.example.travellabel.View.Map.MapsActivity
+import com.example.travellabel.View.Profile.ProfileActivity
 import com.example.travellabel.ViewModelFactory
 import com.example.travellabel.View.Welcome.WelcomeActivity
 import com.example.travellabel.databinding.ActivityMainBinding
@@ -60,6 +61,12 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.forum -> {
                     val intent = Intent(this, ForumActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+
+                R.id.profile -> {
+                    val intent = Intent(this, ProfileActivity::class.java)
                     startActivity(intent)
                     true
                 }
