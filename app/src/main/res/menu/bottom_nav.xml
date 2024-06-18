@@ -23,7 +23,7 @@
 
     <item
         android:id ="@+id/profile"
-        android:icon="@drawable/ic_profile"
+        android:icon="@drawable/person_24px"
         android:title="Profile" />
 
 </menu>

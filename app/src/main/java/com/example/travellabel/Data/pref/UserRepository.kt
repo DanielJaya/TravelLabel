@@ -5,16 +5,18 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.liveData
 import com.example.travellabel.Data.api.ApiService
-import com.example.travellabel.Data.api.LoginRequest
-import com.example.travellabel.Data.api.RegisterRequest
+import com.example.travellabel.Request.LoginRequest
+import com.example.travellabel.Request.RegisterRequest
+import com.example.travellabel.Response.GetUserResponse
 import com.example.travellabel.Response.LocationResponse
 import com.example.travellabel.Response.LoginResponse
 import com.example.travellabel.Response.RegisterResponse
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class UserRepository private constructor(
     private val apiService: ApiService,
@@ -39,8 +41,12 @@ class UserRepository private constructor(
     }
 
 
-    suspend fun login(request: LoginRequest): Call<LoginResponse> {
+    fun login(request: LoginRequest): Call<LoginResponse> {
         return apiService.login(request)
+    }
+
+    suspend fun logout() {
+        userPreference.logout()
     }
 
     suspend fun getLocation() : LiveData<Output<LocationResponse>> = liveData {
@@ -57,10 +63,18 @@ class UserRepository private constructor(
         }
     }
 
-    suspend fun logout() {
-        userPreference.logout()
+    suspend fun getUser(username: String): Flow<Result<GetUserResponse>> {
+        val getFlow = flow {
+            try {
+                val getUserResponse = apiService.getUser(username)
+                emit(Result.success(getUserResponse))
+            } catch (error: Exception) {
+                error.printStackTrace()
+                emit(Result.failure(error))
+            }
+        }.flowOn(Dispatchers.IO)
+        return getFlow
     }
-
 
     companion object {
         @Volatile

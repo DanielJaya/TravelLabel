@@ -1,20 +1,16 @@
 package com.example.travellabel.View.Login
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.travellabel.Data.api.LoginRequest
+import com.example.travellabel.Request.LoginRequest
 import com.example.travellabel.Data.pref.UserModel
 import com.example.travellabel.Data.pref.UserRepository
 import com.example.travellabel.Response.LoginResponse
-import com.google.gson.Gson
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
-import retrofit2.HttpException
 import retrofit2.Response
 
 class LoginViewModel(private val repository: UserRepository) : ViewModel() {

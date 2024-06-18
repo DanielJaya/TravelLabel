@@ -7,22 +7,14 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
-import com.example.travellabel.Data.api.LoginRequest
+import com.example.travellabel.Request.LoginRequest
 import com.example.travellabel.Data.pref.UserModel
 import com.example.travellabel.R
-import com.example.travellabel.Response.RegisterResponse
 import com.example.travellabel.View.Main.MainActivity
-import com.example.travellabel.View.Signup.SignupActivity
 import com.example.travellabel.ViewModelFactory
 import com.example.travellabel.databinding.ActivityLoginBinding
-import com.google.gson.Gson
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import retrofit2.HttpException
 
 class LoginActivity : AppCompatActivity() {
     private var _binding: ActivityLoginBinding? = null
@@ -64,8 +56,9 @@ class LoginActivity : AppCompatActivity() {
         }
 
         viewModel.loginResult.observe(this) { result ->
+            val username = binding.edLoginUsername.text.toString()
             Log.e("LoginActivity", "Login result: $result")
-            if (result == null || result.message == "Invalid credentials") {
+            if (result == null || result.status.isEmpty()) {
                 // Login failed, show feedback to the user
                 showToast(getString(R.string.loginfailed))
             } else {
@@ -73,6 +66,7 @@ class LoginActivity : AppCompatActivity() {
                 showToast(getString(R.string.loginsuccess))
                 saveSession(
                     UserModel(
+                        username,
                         result.status,
                         result.message,
                         result.accessToken,

@@ -6,10 +6,6 @@ import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.lifecycle.Observer
-import com.example.travellabel.View.Login.LoginActivity
 import com.example.travellabel.R
 import com.example.travellabel.View.Bookmark.BookmarkActivity
 import com.example.travellabel.View.Forum.ForumActivity
@@ -18,13 +14,13 @@ import com.example.travellabel.View.Profile.ProfileActivity
 import com.example.travellabel.ViewModelFactory
 import com.example.travellabel.View.Welcome.WelcomeActivity
 import com.example.travellabel.databinding.ActivityMainBinding
-import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var token: String
 
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
-    private val viewModel by viewModels<MainActivityViewModel> {
+    private val viewModel by viewModels<MainViewModel> {
         ViewModelFactory.getInstance(this)
     }
 
@@ -37,6 +33,10 @@ class MainActivity : AppCompatActivity() {
 
         navbar()
         getSession()
+    }
+
+    private fun setupAction() {
+
     }
 
     private fun navbar() {
@@ -64,7 +64,6 @@ class MainActivity : AppCompatActivity() {
                     startActivity(intent)
                     true
                 }
-
                 R.id.profile -> {
                     val intent = Intent(this, ProfileActivity::class.java)
                     startActivity(intent)
@@ -80,6 +79,11 @@ class MainActivity : AppCompatActivity() {
             Log.d("MainActivity", "User session observed: $user")
             if (!user.isLogin) {
                 navigateToWelcomeActivity()
+            } else if (user.isLogin) {
+//                token = user.token
+//                binding.topAppBar.title = "Token Main : $token"
+//                setupView()
+                setupAction()
             }
         }
     }

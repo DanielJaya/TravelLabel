@@ -7,18 +7,75 @@
     android:layout_height="match_parent"
     tools:context=".View.Profile.ProfileActivity">
 
-    <Button
-        android:id="@+id/logoutButton"
-        android:layout_width="wrap_content"
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/navBottom"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="32dp"
-        android:text="@string/logout"
-        android:backgroundTint="@color/dark_blue"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        android:layout_marginStart="0dp"
+        android:layout_marginEnd="0dp"
+        android:background="?android:attr/windowBackground"
+        app:itemIconTint="@color/light_blue"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:menu="@menu/bottom_nav"
+        />
+
+<!--    <ImageView-->
+<!--        android:id="@+id/img_item_photo"-->
+<!--        android:layout_width="350dp"-->
+<!--        android:layout_height="196dp"-->
+<!--        tools:layout_editor_absoluteX="dp"-->
+<!--        tools:layout_editor_absoluteY="0dp"-->
+<!--        tools:src="@tools:sample/avatars"-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        tools:alpha="100"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent" />-->
+
+    <TextView
+        android:id="@+id/tv_judul"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Biodata Profil"
+        android:textStyle="bold"
+        android:textSize="40sp"
+        android:textColor="#5CA6DB"
+        android:fontFamily="@font/robotomono"
+        android:layout_marginTop="50dp"
+        android:textAlignment="center"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/tv_username"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        tools:text="tes"
+        android:textStyle="bold"
+        android:textSize="25sp"
+        tools:alpha="100"
+        app:layout_constraintTop_toBottomOf="@+id/tv_judul"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="60dp"
+        android:layout_marginEnd="60dp"
+        android:layout_marginTop="30dp"/>
+
+    <TextView
+        android:id="@+id/tv_email"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        tools:text="tes"
+
+        android:textSize="17sp"
+        tools:alpha="100"
+        app:layout_constraintTop_toBottomOf="@+id/tv_username"
+        app:layout_constraintStart_toStartOf="@id/tv_username"
+        app:layout_constraintEnd_toEndOf="@id/tv_username"
+        android:layout_marginTop="20dp"/>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,4 +1,4 @@
-package com.example.travellabel.Data.api
+package com.example.travellabel.Request
 
 data class RegisterRequest(
     val email: String,

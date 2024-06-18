@@ -1,14 +1,16 @@
 package com.example.travellabel.Data.api
 
+import com.example.travellabel.Request.LoginRequest
+import com.example.travellabel.Request.RegisterRequest
+import com.example.travellabel.Response.GetUserResponse
 import com.example.travellabel.Response.LocationResponse
 import com.example.travellabel.Response.LoginResponse
 import com.example.travellabel.Response.RegisterResponse
 import retrofit2.Call
 import retrofit2.http.Body
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ApiService {
@@ -22,4 +24,9 @@ interface ApiService {
     suspend fun getLocation(
         @Query("location") location: Int = 1
     ) : LocationResponse
+
+    @GET("profile/{username}")
+    suspend fun getUser(
+        @Path("username") username: String
+    ): GetUserResponse
 }

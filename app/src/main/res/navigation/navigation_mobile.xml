@@ -28,10 +28,4 @@
         android:name="com.example.travellabel.View.Bookmark.BookmarkActivity"
         android:label="activity_bookmark"
         tools:layout="@layout/activity_bookmark" />
-
-    <activity
-        android:id="@+id/ProfileActivity"
-        android:name="com.example.travellabel.View.Profile.ProfileActivity"
-        android:label="activity_profile"
-        tools:layout="@layout/activity_profile" />
 </navigation>

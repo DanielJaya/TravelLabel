@@ -2,7 +2,7 @@ package com.example.travellabel.View.Signup
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.travellabel.Data.api.RegisterRequest
+import com.example.travellabel.Request.RegisterRequest
 import com.example.travellabel.Data.pref.UserRepository
 import com.example.travellabel.Response.RegisterResponse
 import com.google.gson.Gson
