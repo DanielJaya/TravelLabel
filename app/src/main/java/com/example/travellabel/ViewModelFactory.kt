@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.travellabel.Data.pref.UserPreference
 import com.example.travellabel.Data.pref.UserRepository
 import com.example.travellabel.Data.pref.dataStore
+import com.example.travellabel.View.AddLocation.AddLocationViewModel
 import com.example.travellabel.View.Login.LoginViewModel
 import com.example.travellabel.View.Main.MainViewModel
 import com.example.travellabel.View.Map.MapsViewModel
@@ -22,6 +23,7 @@ class ViewModelFactory(private val repository: UserRepository) : ViewModelProvid
             modelClass.isAssignableFrom(LoginViewModel::class.java) -> LoginViewModel(repository)
             modelClass.isAssignableFrom(MapsViewModel::class.java) -> MapsViewModel(repository)
             modelClass.isAssignableFrom(ProfileViewModel::class.java) -> ProfileViewModel(repository)
+            modelClass.isAssignableFrom(AddLocationViewModel::class.java) -> AddLocationViewModel(repository)
             else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }
         @Suppress("UNCHECKED_CAST")

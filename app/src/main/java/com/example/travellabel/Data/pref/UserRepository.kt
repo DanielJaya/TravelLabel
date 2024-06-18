@@ -5,8 +5,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.liveData
 import com.example.travellabel.Data.api.ApiService
+import com.example.travellabel.Request.CreateLocationRequest
 import com.example.travellabel.Request.LoginRequest
 import com.example.travellabel.Request.RegisterRequest
+import com.example.travellabel.Response.CreateLocationResponse
 import com.example.travellabel.Response.GetUserResponse
 import com.example.travellabel.Response.LocationResponse
 import com.example.travellabel.Response.LoginResponse
@@ -74,6 +76,10 @@ class UserRepository private constructor(
             }
         }.flowOn(Dispatchers.IO)
         return getFlow
+    }
+
+    suspend fun createLocation(request: CreateLocationRequest): CreateLocationResponse {
+        return apiService.createLocation(request)
     }
 
     companion object {

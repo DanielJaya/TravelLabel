@@ -197,7 +197,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun fabAddLoc() {
         binding.fabAddLoc.setOnClickListener {
-            startActivity(Intent(this@MapsActivity, AddLocationActivity::class.java))
+            val intent = Intent(this@MapsActivity, AddLocationActivity::class.java)
+            ViewModelFactory.clearInstance()
+            startActivity(intent)
+            finish()
         }
     }
 }

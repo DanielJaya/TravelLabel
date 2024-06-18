@@ -15,6 +15,13 @@
         android:layout_height="match_parent"
         tools:context=".View.Map.MapsActivity" />
 
+    <ImageView
+        android:id="@+id/crosshair"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="center"
+        android:src="@drawable/ic_crosshair" />
+
     <FrameLayout
         android:id="@+id/bottomSheet"
         android:layout_width="match_parent"

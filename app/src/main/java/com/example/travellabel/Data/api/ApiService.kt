@@ -1,7 +1,9 @@
 package com.example.travellabel.Data.api
 
+import com.example.travellabel.Request.CreateLocationRequest
 import com.example.travellabel.Request.LoginRequest
 import com.example.travellabel.Request.RegisterRequest
+import com.example.travellabel.Response.CreateLocationResponse
 import com.example.travellabel.Response.GetUserResponse
 import com.example.travellabel.Response.LocationResponse
 import com.example.travellabel.Response.LoginResponse
@@ -29,4 +31,9 @@ interface ApiService {
     suspend fun getUser(
         @Path("username") username: String
     ): GetUserResponse
+
+    @POST("location")
+    suspend fun createLocation(
+        @Body addLocationRequest: CreateLocationRequest
+    ) : CreateLocationResponse
 }
