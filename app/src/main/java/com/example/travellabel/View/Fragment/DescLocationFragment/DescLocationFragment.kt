@@ -6,12 +6,18 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.travellabel.R
+import com.example.travellabel.Response.LocationsItem
 import com.example.travellabel.View.Bookmark.BookmarkActivity
 import com.example.travellabel.View.Forum.ForumActivity
 import com.example.travellabel.View.Main.MainActivity
+import com.example.travellabel.databinding.FragmentDescLocationBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -23,18 +29,19 @@ private const val ARG_PARAM2 = "param2"
  * Use the [DescLocationFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class DescLocationFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+class DescLocationFragment : BottomSheetDialogFragment() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+    companion object {
+        private const val ARG_LABEL = "label"
+        private const val ARG_DESCRIPTION = "description"
 
-            navbar()
+        fun newInstance(label: String, description: String): DescLocationFragment {
+            val fragment = DescLocationFragment()
+            val args = Bundle()
+            args.putString(ARG_LABEL, label)
+            args.putString(ARG_DESCRIPTION, description)
+            fragment.arguments = args
+            return fragment
         }
     }
 
@@ -42,66 +49,16 @@ class DescLocationFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_desc_location, container, false)
-
-        val recyclerView = view.findViewById<RecyclerView>(R.id.reviewContainer)
-        recyclerView.setOnTouchListener { _, _ ->
-            recyclerView.parent.requestDisallowInterceptTouchEvent(true)
-            false
-        }
-
-        return view
+        return inflater.inflate(R.layout.fragment_desc_location, container, false)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
+        val label = arguments?.getString(ARG_LABEL)
+        val description = arguments?.getString(ARG_DESCRIPTION)
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment DescLocationFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            DescLocationFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
-
-    private fun navbar(){
-        val navBottom = view?.findViewById<BottomNavigationView>(R.id.navBottom)
-        navBottom?.selectedItemId = R.id.map
-
-        navBottom?.setOnItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.home -> {
-                    val intent = Intent(requireContext(), MainActivity::class.java)
-                    startActivity(intent)
-                    true
-                }
-                R.id.map -> {
-                    true
-                }
-                R.id.bookmark -> {
-                    val intent = Intent(requireContext(), BookmarkActivity::class.java)
-                    startActivity(intent)
-                    true
-                }
-                R.id.forum -> {
-                    val intent = Intent(requireContext(), ForumActivity::class.java)
-                    startActivity(intent)
-                    true
-                }
-                else -> false
-            }
-        }
+        view.findViewById<TextView>(R.id.namaTempatWisata).text = label
+        view.findViewById<TextView>(R.id.descTempatWisata).text = description
     }
 }

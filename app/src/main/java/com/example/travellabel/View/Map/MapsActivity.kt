@@ -107,7 +107,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap.setOnMarkerClickListener { marker ->
             isMarkerClicked = true
             binding.bottomSheet.visibility = View.VISIBLE
-            showFragmentLocation()
+            showFragmentLocation(marker.title, marker.snippet)
             true
         }
 
@@ -183,9 +183,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             if (isGranted) getLocPermission()
         }
 
-    private fun showFragmentLocation() {
+    private fun showFragmentLocation(label: String?, description: String?) {
+        val fragment = DescLocationFragment.newInstance(label ?: "", description ?: "")
         supportFragmentManager.beginTransaction()
-            .replace(R.id.bottomSheetContainer, DescLocationFragment())
+            .replace(R.id.bottomSheetContainer, fragment)
             .commit()
     }
 

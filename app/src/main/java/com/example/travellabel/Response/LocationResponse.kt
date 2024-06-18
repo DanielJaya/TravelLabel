@@ -1,6 +1,8 @@
 package com.example.travellabel.Response
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 data class LocationResponse(
 
@@ -13,7 +15,7 @@ data class LocationResponse(
 	@field:SerializedName("status")
 	val status: String? = null
 )
-
+@Parcelize
 data class LocationsItem(
 
 	@field:SerializedName("raters")
@@ -36,4 +38,4 @@ data class LocationsItem(
 
 	@field:SerializedName("lat")
 	val lat: String? = null
-)
+): Parcelable
