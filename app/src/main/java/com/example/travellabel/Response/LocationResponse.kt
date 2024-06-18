@@ -29,7 +29,7 @@ data class LocationsItem(
 	val lon: String? = null,
 
 	@field:SerializedName("id")
-	val id: Int? = null,
+	val id: String? = null,
 
 	@field:SerializedName("label")
 	val label: String? = null,

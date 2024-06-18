@@ -47,7 +47,7 @@ class UserRepository private constructor(
         emit(Output.Loading)
         try {
             val response = apiService.getLocation()
-            if (response.status == "200") {
+            if (response.status == "OK") {
                 emit(Output.Success(response))
             } else {
                 emit(Output.Error(response.message.toString()))

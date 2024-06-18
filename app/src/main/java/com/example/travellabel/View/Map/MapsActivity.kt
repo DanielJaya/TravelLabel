@@ -94,11 +94,14 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap.uiSettings.isCompassEnabled = true
         mMap.uiSettings.isMapToolbarEnabled = true
 
-        // Add a marker in Sydney and move the camera
-        val sydney = LatLng(-34.0, 151.0)
-        mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
-
+        val dicodingSpace = LatLng(-6.8957643, 107.6338462)
+        mMap.addMarker(
+            MarkerOptions()
+                .position(dicodingSpace)
+                .title("Dicoding Space")
+                .snippet("Batik Kumeli No.50")
+        )
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(dicodingSpace))
 
         // Tampilkan Desc Lokasi Berdasarkan Marker Yang Dipilih
         mMap.setOnMarkerClickListener { marker ->
@@ -114,28 +117,29 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun getLocPermission(){
         if(ContextCompat.checkSelfPermission(
-            this.applicationContext,
-            android.Manifest.permission.ACCESS_FINE_LOCATION
-        )== PackageManager.PERMISSION_GRANTED
-            ){
-                mMap.isMyLocationEnabled = true
-        }else{
+                this.applicationContext,
+                android.Manifest.permission.ACCESS_FINE_LOCATION
+            )== PackageManager.PERMISSION_GRANTED) {
+            mMap.isMyLocationEnabled = true
+        } else {
             requestPermissionLauncher.launch(android.Manifest.permission.ACCESS_FINE_LOCATION)
         }
     }
 
     private fun getLocation() {
         lifecycleScope.launch {
-            viewModel.getLocation().observe(this@MapsActivity) { location ->
-                location?.let {
+            viewModel.getLocation().observe(this@MapsActivity) { response ->
+                response?.let {
                     when (it) {
                         is Output.Loading -> Log.d(TAG, "getLocation: Loading")
                         is Output.Success -> {
+                            Log.d(TAG, "getLocation: Success, data=${it.value.locations}")
                             it.value.locations.forEach { loc ->
                                 val lat = loc.lat?.toDoubleOrNull()
                                 val lon = loc.lon?.toDoubleOrNull()
                                 if (lat != null && lon != null) {
                                     val latLng = LatLng(lat, lon)
+                                    Log.d(TAG, "Adding marker at: $latLng, label: ${loc.label}, description: ${loc.description}")
                                     mMap.addMarker(
                                         MarkerOptions()
                                             .position(latLng)
@@ -143,20 +147,26 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                                             .snippet(loc.description)
                                     )
                                     boundsBuilder.include(latLng)
+                                } else {
+                                    Log.e(TAG, "Invalid location coordinates: lat=${loc.lat}, lon=${loc.lon}")
+                                    showToast("Invalid location coordinates: lat=${loc.lat}, lon=${loc.lon}")
                                 }
                             }
-
+                            val bounds = boundsBuilder.build()
+                            Log.d(TAG, "Bounds built: $bounds")
                             mMap.animateCamera(
                                 CameraUpdateFactory.newLatLngBounds(
-                                    boundsBuilder.build(),
+                                    bounds,
                                     resources.displayMetrics.widthPixels,
                                     resources.displayMetrics.heightPixels,
                                     300
                                 )
                             )
                         }
-
-                        is Output.Error -> showToast(it.error)
+                        is Output.Error -> {
+                            Log.e(TAG, "getLocation: Error, message=${it.error}")
+                            showToast(it.error)
+                        }
                     }
                 }
             }
