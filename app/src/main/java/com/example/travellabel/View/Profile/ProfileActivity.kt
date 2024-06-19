@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.travellabel.R
 import com.example.travellabel.View.Bookmark.BookmarkActivity
+import com.example.travellabel.View.EditProfile.EditProfileActivity
 import com.example.travellabel.View.Forum.ForumActivity
 import com.example.travellabel.View.Main.MainActivity
 import com.example.travellabel.View.Map.MapsActivity
@@ -44,10 +45,16 @@ class ProfileActivity : AppCompatActivity() {
         viewModel.getUser(username)
 
         viewModel.username.observe(this) {
-            binding.tvUsername.text = it
+            binding.tvUsername.text = "Username : \n${it}"
         }
         viewModel.email.observe(this) {
-            binding.tvEmail.text = it
+            binding.tvEmail.text = "Email : \n${it}"
+        }
+
+        binding.buttonEditprofile.setOnClickListener {
+            val intent = Intent(this@ProfileActivity, EditProfileActivity::class.java)
+            ViewModelFactory.clearInstance()
+            startActivity(intent)
         }
     }
 

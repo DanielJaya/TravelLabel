@@ -8,6 +8,7 @@ import com.example.travellabel.Data.api.ApiService
 import com.example.travellabel.Request.CreateLocationRequest
 import com.example.travellabel.Request.LoginRequest
 import com.example.travellabel.Request.RegisterRequest
+import com.example.travellabel.Request.UpdateProfileRequest
 import com.example.travellabel.Response.CreateLocationResponse
 import com.example.travellabel.Response.GetUserResponse
 import com.example.travellabel.Response.LocationResponse
@@ -70,6 +71,19 @@ class UserRepository private constructor(
             try {
                 val getUserResponse = apiService.getUser(username)
                 emit(Result.success(getUserResponse))
+            } catch (error: Exception) {
+                error.printStackTrace()
+                emit(Result.failure(error))
+            }
+        }.flowOn(Dispatchers.IO)
+        return getFlow
+    }
+
+    suspend fun updateUser(username: String, updateProfileRequest: UpdateProfileRequest): Flow<Result<GetUserResponse>> {
+        val getFlow = flow {
+            try {
+                val updateUserResponse = apiService.updateUser(username, updateProfileRequest)
+                emit(Result.success(updateUserResponse))
             } catch (error: Exception) {
                 error.printStackTrace()
                 emit(Result.failure(error))

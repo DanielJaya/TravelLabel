@@ -66,6 +66,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.profile -> {
                     val intent = Intent(this, ProfileActivity::class.java)
+                    ViewModelFactory.clearInstance()
                     startActivity(intent)
                     true
                 }

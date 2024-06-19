@@ -76,6 +76,20 @@
         app:layout_constraintEnd_toEndOf="@id/tv_username"
         android:layout_marginTop="20dp"/>
 
+    <Button
+        android:id="@+id/button_editprofile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="60dp"
+        app:layout_constraintBottom_toTopOf="@id/navBottom"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="Edit Profil"
+        android:backgroundTint="#5CA6DB"
+        android:textStyle="bold"
+        android:textColor="?android:attr/windowBackground"
+        android:fontFamily="@font/robotomono"/>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

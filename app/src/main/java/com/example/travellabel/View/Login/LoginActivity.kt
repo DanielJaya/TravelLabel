@@ -30,7 +30,7 @@ class LoginActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(binding.root)
 
-            submitLogin()
+        submitLogin()
     }
 
 

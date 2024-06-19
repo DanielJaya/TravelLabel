@@ -16,12 +16,12 @@ data class GetUserResponse(
 
 data class GetUser(
 
-//	@field:SerializedName("name")
-//	val name: String,
-
 	@field:SerializedName("email")
 	val email: String,
 
 	@field:SerializedName("username")
-	val username: String
+	val username: String,
+
+	@field:SerializedName("name")
+	val name: String
 )
