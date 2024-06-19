@@ -14,10 +14,12 @@ import com.example.travellabel.R
 import com.example.travellabel.View.Bookmark.BookmarkActivity
 import com.example.travellabel.View.EditProfile.EditProfileActivity
 import com.example.travellabel.View.Forum.ForumActivity
+import com.example.travellabel.View.Login.LoginActivity
 import com.example.travellabel.View.Main.MainActivity
 import com.example.travellabel.View.Map.MapsActivity
 import com.example.travellabel.ViewModelFactory
 import com.example.travellabel.databinding.ActivityProfileBinding
+import kotlinx.coroutines.launch
 
 class ProfileActivity : AppCompatActivity() {
     private lateinit var viewModel: ProfileViewModel
@@ -38,6 +40,7 @@ class ProfileActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this, factory).get(ProfileViewModel::class.java)
         navbar()
         getSession()
+        setViews()
 
     }
 
@@ -111,6 +114,22 @@ class ProfileActivity : AppCompatActivity() {
                 setupAction(user.username)
             }
         }
+    }
+
+    private fun setViews() {
+        binding.logoutButton.setOnClickListener {
+            lifecycleScope.launch {
+                viewModel.logout()
+                navigateToLoginActivity()
+            }
+        }
+    }
+
+    private fun navigateToLoginActivity(){
+        startActivity(Intent(this, LoginActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+        })
+        finish()
     }
 
     override fun onDestroy() {

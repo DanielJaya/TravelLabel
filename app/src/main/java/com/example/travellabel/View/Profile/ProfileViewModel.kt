@@ -32,4 +32,8 @@ class ProfileViewModel(private val repository: UserRepository) : ViewModel() {
     fun getSession(): LiveData<UserModel> {
         return repository.getSession().asLiveData()
     }
+
+    suspend fun logout() {
+        repository.logout()
+    }
 }
