@@ -1,0 +1,36 @@
+package com.example.travellabel.Response
+
+import com.google.gson.annotations.SerializedName
+
+data class CreateDiscussionResponse(
+
+	@field:SerializedName("discussion")
+	val discussion: CreateDiscussionItem,
+
+	@field:SerializedName("message")
+	val message: String,
+
+	@field:SerializedName("status")
+	val status: String
+)
+
+data class CreateDiscussionItem(
+
+	@field:SerializedName("createdAt")
+	val createdAt: String,
+
+	@field:SerializedName("locationId")
+	val locationId: String,
+
+	@field:SerializedName("creatorId")
+	val creatorId: String,
+
+	@field:SerializedName("id")
+	val id: String,
+
+	@field:SerializedName("title")
+	val title: String,
+
+	@field:SerializedName("content")
+	val content: String
+)

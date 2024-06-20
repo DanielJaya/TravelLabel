@@ -1,5 +1,6 @@
 package com.example.travellabel.View.Fragment.DescLocationFragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,6 +15,7 @@ import com.example.travellabel.R
 import com.example.travellabel.ViewModelFactory
 import com.example.travellabel.databinding.FragmentDescLocationBinding
 import com.example.travellabel.Data.Adapter.ReviewAdapter
+import com.example.travellabel.View.Forum.ForumActivity
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
@@ -72,6 +74,13 @@ class DescLocationFragment : BottomSheetDialogFragment() {
 
         val label = arguments?.getString(ARG_LABEL)
         val description = arguments?.getString(ARG_DESCRIPTION)
+
+        binding.buttonForum.setOnClickListener {
+            val intents = Intent(context, ForumActivity::class.java)
+            intents.putExtra(ForumActivity.EXTRA_LOCATION, locationId)
+            ViewModelFactory.clearInstance()
+            startActivity(intents)
+        }
 
         binding.namaTempatWisata.text = label
         binding.descTempatWisata.text = description

@@ -47,15 +47,31 @@
             android:justificationMode="inter_word"
             />
 
+        <Button
+            android:id="@+id/button_forum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tempat Diskusi"
+            android:backgroundTint="#5CA6DB"
+            android:textStyle="bold"
+            android:textColor="?android:attr/windowBackground"
+            android:fontFamily="@font/robotomono"
+
+            app:layout_constraintTop_toBottomOf="@id/descTempatWisata"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+
+            android:layout_marginTop="20dp"/>
+
         <TextView
             android:id="@+id/judulReview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="10dp"
             android:layout_marginStart="24dp"
             android:text="@string/review"
             android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@id/descTempatWisata"
+            app:layout_constraintTop_toBottomOf="@id/button_forum"
             app:layout_constraintStart_toStartOf="parent"
             />
 

@@ -1,6 +1,7 @@
 package com.example.travellabel.Data.api
 
 import com.example.travellabel.Request.BookmarkRequest
+import com.example.travellabel.Request.CreateDiscussionRequest
 import com.example.travellabel.Request.CreateLocationRequest
 import com.example.travellabel.Request.LoginRequest
 import com.example.travellabel.Request.RegisterRequest
@@ -11,6 +12,8 @@ import com.example.travellabel.Response.LocationResponse
 import com.example.travellabel.Response.LoginResponse
 import com.example.travellabel.Response.RegisterResponse
 import com.example.travellabel.Response.BookmarkResponse
+import com.example.travellabel.Response.CreateDiscussionResponse
+import com.example.travellabel.Response.GetDiscussionResponse
 import com.example.travellabel.Response.ReviewResponse
 import retrofit2.Call
 import retrofit2.http.Body
@@ -68,6 +71,16 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Body request: BookmarkRequest
     ): BookmarkResponse
+
+    @GET("location/{locationId}/discussion")
+    suspend fun getDiscussion(
+        @Path("locationId") locationId: String,
+    ): GetDiscussionResponse
+
+    @POST("discussion")
+    suspend fun createDiscussion(
+        @Body createDiscussionRequest: CreateDiscussionRequest
+    ): CreateDiscussionResponse
 
     @GET("location/{locationId}/review")
     suspend fun getReviewsByLocationId(

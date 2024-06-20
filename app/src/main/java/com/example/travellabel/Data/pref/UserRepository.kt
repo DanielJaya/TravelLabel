@@ -6,12 +6,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.liveData
 import com.example.travellabel.Data.api.ApiService
 import com.example.travellabel.Request.BookmarkRequest
+import com.example.travellabel.Request.CreateDiscussionRequest
 import com.example.travellabel.Request.CreateLocationRequest
 import com.example.travellabel.Request.LoginRequest
 import com.example.travellabel.Request.RegisterRequest
 import com.example.travellabel.Request.UpdateProfileRequest
 import com.example.travellabel.Response.BookmarkResponse
+import com.example.travellabel.Response.CreateDiscussionResponse
 import com.example.travellabel.Response.CreateLocationResponse
+import com.example.travellabel.Response.GetDiscussionResponse
 import com.example.travellabel.Response.GetUserResponse
 import com.example.travellabel.Response.LocationResponse
 import com.example.travellabel.Response.LoginResponse
@@ -114,6 +117,32 @@ class UserRepository private constructor(
 
     suspend fun getReviews(locationId: String): ReviewResponse {
         return apiService.getReviewsByLocationId(locationId)
+    }
+
+    suspend fun getDiscussion(locationId: String): Flow<Result<GetDiscussionResponse>> {
+        val getFlow = flow {
+            try {
+                val getUserResponse = apiService.getDiscussion(locationId)
+                emit(Result.success(getUserResponse))
+            } catch (error: Exception) {
+                error.printStackTrace()
+                emit(Result.failure(error))
+            }
+        }.flowOn(Dispatchers.IO)
+        return getFlow
+    }
+
+    suspend fun createDiscussion(createDiscussionRequest: CreateDiscussionRequest): Flow<Result<CreateDiscussionResponse>> {
+        val getFlow = flow {
+            try {
+                val getUserResponse = apiService.createDiscussion(createDiscussionRequest)
+                emit(Result.success(getUserResponse))
+            } catch (error: Exception) {
+                error.printStackTrace()
+                emit(Result.failure(error))
+            }
+        }.flowOn(Dispatchers.IO)
+        return getFlow
     }
 
     companion object {
