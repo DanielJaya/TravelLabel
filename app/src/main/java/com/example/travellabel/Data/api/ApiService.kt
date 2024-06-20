@@ -1,5 +1,6 @@
 package com.example.travellabel.Data.api
 
+import com.example.travellabel.Request.BookmarkRequest
 import com.example.travellabel.Request.CreateLocationRequest
 import com.example.travellabel.Request.LoginRequest
 import com.example.travellabel.Request.RegisterRequest
@@ -12,6 +13,7 @@ import com.example.travellabel.Response.RegisterResponse
 import com.example.travellabel.Response.BookmarkResponse
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
@@ -53,4 +55,17 @@ interface ApiService {
 
     @GET("bookmark")
     fun getBookmark(): Call<BookmarkResponse>
+
+    @POST("bookmark")
+    suspend fun addBookmark(
+        @Header("Authorization") token: String,
+        @Body request: BookmarkRequest
+    ): BookmarkResponse
+
+    @DELETE("bookmark")
+    suspend fun removeBookmark(
+        @Header("Authorization") token: String,
+        @Body request: BookmarkRequest
+    ): BookmarkResponse
+
 }

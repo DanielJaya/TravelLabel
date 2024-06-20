@@ -107,7 +107,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap.setOnMarkerClickListener { marker ->
             isMarkerClicked = true
             binding.bottomSheet.visibility = View.VISIBLE
-            showFragmentLocation(marker.title, marker.snippet)
+            val locationId = marker.tag as? String
+            showFragmentLocation(marker.title, marker.snippet, locationId)
             true
         }
 
@@ -145,7 +146,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                                             .position(latLng)
                                             .title(loc.label)
                                             .snippet(loc.description)
-                                    )
+                                    )?.apply {
+                                        tag = loc.id  // Set the locationId as the tag of the marker
+                                    }
                                     boundsBuilder.include(latLng)
                                 } else {
                                     Log.e(TAG, "Invalid location coordinates: lat=${loc.lat}, lon=${loc.lon}")
@@ -183,8 +186,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             if (isGranted) getLocPermission()
         }
 
-    private fun showFragmentLocation(label: String?, description: String?) {
-        val fragment = DescLocationFragment.newInstance(label ?: "", description ?: "")
+    private fun showFragmentLocation(label: String?, description: String?, locationId: String?) {
+        val fragment = DescLocationFragment.newInstance(label ?: "", description ?: "", locationId ?: "")
         supportFragmentManager.beginTransaction()
             .replace(R.id.bottomSheetContainer, fragment)
             .commit()

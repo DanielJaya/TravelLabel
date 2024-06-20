@@ -5,10 +5,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.liveData
 import com.example.travellabel.Data.api.ApiService
+import com.example.travellabel.Request.BookmarkRequest
 import com.example.travellabel.Request.CreateLocationRequest
 import com.example.travellabel.Request.LoginRequest
 import com.example.travellabel.Request.RegisterRequest
 import com.example.travellabel.Request.UpdateProfileRequest
+import com.example.travellabel.Response.BookmarkResponse
 import com.example.travellabel.Response.CreateLocationResponse
 import com.example.travellabel.Response.GetUserResponse
 import com.example.travellabel.Response.LocationResponse
@@ -19,6 +21,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 import retrofit2.Call
 
 class UserRepository private constructor(
@@ -94,6 +97,18 @@ class UserRepository private constructor(
 
     suspend fun createLocation(request: CreateLocationRequest): CreateLocationResponse {
         return apiService.createLocation(request)
+    }
+
+    suspend fun addBookmark(locationId: String, token: String): BookmarkResponse {
+        return withContext(Dispatchers.IO) {
+            apiService.addBookmark(token, BookmarkRequest(locationId))
+        }
+    }
+
+    suspend fun removeBookmark(locationId: String, token: String): BookmarkResponse {
+        return withContext(Dispatchers.IO) {
+            apiService.removeBookmark(token, BookmarkRequest(locationId))
+        }
     }
 
     companion object {

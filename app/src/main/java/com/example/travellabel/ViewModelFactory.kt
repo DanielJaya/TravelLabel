@@ -8,6 +8,7 @@ import com.example.travellabel.Data.pref.UserRepository
 import com.example.travellabel.Data.pref.dataStore
 import com.example.travellabel.View.AddLocation.AddLocationViewModel
 import com.example.travellabel.View.EditProfile.EditProfileViewModel
+import com.example.travellabel.View.Fragment.DescLocationFragment.DescLocationViewModel
 import com.example.travellabel.View.Login.LoginViewModel
 import com.example.travellabel.View.Main.MainViewModel
 import com.example.travellabel.View.Map.MapsViewModel
@@ -26,6 +27,7 @@ class ViewModelFactory(private val repository: UserRepository) : ViewModelProvid
             modelClass.isAssignableFrom(ProfileViewModel::class.java) -> ProfileViewModel(repository)
             modelClass.isAssignableFrom(EditProfileViewModel::class.java) -> EditProfileViewModel(repository)
             modelClass.isAssignableFrom(AddLocationViewModel::class.java) -> AddLocationViewModel(repository)
+            modelClass.isAssignableFrom(DescLocationViewModel::class.java) -> DescLocationViewModel(repository)
             else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }
         @Suppress("UNCHECKED_CAST")
