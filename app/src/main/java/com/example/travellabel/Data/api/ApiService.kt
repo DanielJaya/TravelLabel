@@ -5,6 +5,7 @@ import com.example.travellabel.Request.CreateDiscussionRequest
 import com.example.travellabel.Request.CreateLocationRequest
 import com.example.travellabel.Request.LoginRequest
 import com.example.travellabel.Request.RegisterRequest
+import com.example.travellabel.Request.ReviewRequest
 import com.example.travellabel.Request.UpdateProfileRequest
 import com.example.travellabel.Response.CreateLocationResponse
 import com.example.travellabel.Response.GetUserResponse
@@ -86,4 +87,10 @@ interface ApiService {
     suspend fun getReviewsByLocationId(
         @Path("locationId") locationId: String
         ): ReviewResponse
+
+    @POST("review")
+    suspend fun createReview(
+        @Header("Authorization") token: String,
+        @Body reviewRequest: ReviewRequest
+    ): ReviewResponse
     }

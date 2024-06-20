@@ -10,6 +10,7 @@ import com.example.travellabel.Request.CreateDiscussionRequest
 import com.example.travellabel.Request.CreateLocationRequest
 import com.example.travellabel.Request.LoginRequest
 import com.example.travellabel.Request.RegisterRequest
+import com.example.travellabel.Request.ReviewRequest
 import com.example.travellabel.Request.UpdateProfileRequest
 import com.example.travellabel.Response.BookmarkResponse
 import com.example.travellabel.Response.CreateDiscussionResponse
@@ -143,6 +144,10 @@ class UserRepository private constructor(
             }
         }.flowOn(Dispatchers.IO)
         return getFlow
+    }
+
+    suspend fun createReview(token: String, reviewRequest: ReviewRequest): ReviewResponse {
+        return apiService.createReview(token, reviewRequest)
     }
 
     companion object {

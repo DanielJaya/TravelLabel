@@ -15,6 +15,7 @@ import com.example.travellabel.R
 import com.example.travellabel.ViewModelFactory
 import com.example.travellabel.databinding.FragmentDescLocationBinding
 import com.example.travellabel.Data.Adapter.ReviewAdapter
+import com.example.travellabel.View.AddReview.AddReviewActivity
 import com.example.travellabel.View.Forum.ForumActivity
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.coroutines.flow.first
@@ -108,6 +109,13 @@ class DescLocationFragment : BottomSheetDialogFragment() {
             } else {
                 Glide.with(this).load(R.drawable.ic_bookmark).into(binding.bookmark)
             }
+        }
+
+        binding.addReviewButton.setOnClickListener {
+            val intent = Intent(requireContext(), AddReviewActivity::class.java)
+            intent.putExtra("location_id", locationId)
+            intent.putExtra("token", token)
+            startActivity(intent)
         }
     }
 

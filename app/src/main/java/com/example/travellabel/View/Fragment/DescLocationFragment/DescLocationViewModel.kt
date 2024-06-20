@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.travellabel.Data.api.ApiService
 import com.example.travellabel.Data.pref.UserRepository
+import com.example.travellabel.Request.ReviewRequest
 import com.example.travellabel.Response.BookmarkResponse
 import com.example.travellabel.Response.Review
 import com.example.travellabel.Response.User1
@@ -25,6 +26,10 @@ class DescLocationViewModel(private val repository: UserRepository, private val 
 
     private val _errorMessage = MutableLiveData<String>()
     val errorMessage: LiveData<String> get() = _errorMessage
+
+    private val _reviewSubmissionStatus = MutableLiveData<Boolean>()
+    val reviewSubmissionStatus: LiveData<Boolean> get() = _reviewSubmissionStatus
+
 
     fun fetchReviews(locationId: String) {
         Log.d("DescLocationViewModel", "Fetching reviews for location: $locationId")
@@ -79,6 +84,23 @@ class DescLocationViewModel(private val repository: UserRepository, private val 
 
                 }
             } catch (e: Exception) {
+            }
+        }
+    }
+
+    fun submitReview(locationId: String, content: String, rating: String, token: String) {
+        viewModelScope.launch {
+            try {
+                val request = ReviewRequest(locationId, rating, content)
+                val response = repository.createReview(token, request)
+                if (response.status == "OK") {
+                    _reviewSubmissionStatus.postValue(true)
+                    fetchReviews(locationId) // Refresh reviews after submission
+                } else {
+                    _reviewSubmissionStatus.postValue(false)
+                }
+            } catch (e: Exception) {
+                _reviewSubmissionStatus.postValue(false)
             }
         }
     }
