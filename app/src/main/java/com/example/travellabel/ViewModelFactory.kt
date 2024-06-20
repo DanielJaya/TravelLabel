@@ -3,6 +3,7 @@ package com.example.travellabel
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.example.travellabel.Data.api.ApiService
 import com.example.travellabel.Data.pref.UserPreference
 import com.example.travellabel.Data.pref.UserRepository
 import com.example.travellabel.Data.pref.dataStore
@@ -17,7 +18,7 @@ import com.example.travellabel.View.Signup.SignupViewModel
 import com.example.travellabel.di.injection
 
 @Suppress("UNCHECKED_CAST")
-class ViewModelFactory(private val repository: UserRepository) : ViewModelProvider.NewInstanceFactory() {
+class ViewModelFactory(private val repository: UserRepository, private val apiService: ApiService) : ViewModelProvider.NewInstanceFactory() {
     override fun <Type : ViewModel> create(modelClass: Class<Type>): Type {
         val viewModel = when {
             modelClass.isAssignableFrom(MainViewModel::class.java) -> MainViewModel(repository)
@@ -27,7 +28,7 @@ class ViewModelFactory(private val repository: UserRepository) : ViewModelProvid
             modelClass.isAssignableFrom(ProfileViewModel::class.java) -> ProfileViewModel(repository)
             modelClass.isAssignableFrom(EditProfileViewModel::class.java) -> EditProfileViewModel(repository)
             modelClass.isAssignableFrom(AddLocationViewModel::class.java) -> AddLocationViewModel(repository)
-            modelClass.isAssignableFrom(DescLocationViewModel::class.java) -> DescLocationViewModel(repository)
+            modelClass.isAssignableFrom(DescLocationViewModel::class.java) -> DescLocationViewModel(repository, apiService)
             else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }
         @Suppress("UNCHECKED_CAST")
@@ -45,12 +46,12 @@ class ViewModelFactory(private val repository: UserRepository) : ViewModelProvid
 
         @JvmStatic
         fun getInstance(context: Context): ViewModelFactory {
-            if (INSTANCE == null) {
-                synchronized(ViewModelFactory::class.java) {
-                    INSTANCE = ViewModelFactory(injection.provideRepository(context))
-                }
+            return INSTANCE ?: synchronized(this) {
+                INSTANCE ?: ViewModelFactory(
+                    injection.provideRepository(context),
+                    injection.provideApiService(context)
+                ).also { INSTANCE = it }
             }
-            return INSTANCE as ViewModelFactory
         }
     }
 }

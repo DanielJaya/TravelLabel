@@ -16,6 +16,7 @@ import com.example.travellabel.Response.GetUserResponse
 import com.example.travellabel.Response.LocationResponse
 import com.example.travellabel.Response.LoginResponse
 import com.example.travellabel.Response.RegisterResponse
+import com.example.travellabel.Response.ReviewResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -109,6 +110,10 @@ class UserRepository private constructor(
         return withContext(Dispatchers.IO) {
             apiService.removeBookmark(token, BookmarkRequest(locationId))
         }
+    }
+
+    suspend fun getReviews(locationId: String): ReviewResponse {
+        return apiService.getReviewsByLocationId(locationId)
     }
 
     companion object {

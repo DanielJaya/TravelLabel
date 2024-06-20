@@ -11,6 +11,7 @@ import com.example.travellabel.Response.LocationResponse
 import com.example.travellabel.Response.LoginResponse
 import com.example.travellabel.Response.RegisterResponse
 import com.example.travellabel.Response.BookmarkResponse
+import com.example.travellabel.Response.ReviewResponse
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -35,7 +36,7 @@ interface ApiService {
     @GET("location")
     suspend fun getLocation(
         @Query("location") location: Int = 1
-    ) : LocationResponse
+    ): LocationResponse
 
     @GET("profile/{username}")
     suspend fun getUser(
@@ -51,7 +52,7 @@ interface ApiService {
     @POST("location")
     suspend fun createLocation(
         @Body addLocationRequest: CreateLocationRequest
-    ) : CreateLocationResponse
+    ): CreateLocationResponse
 
     @GET("bookmark")
     fun getBookmark(): Call<BookmarkResponse>
@@ -68,4 +69,8 @@ interface ApiService {
         @Body request: BookmarkRequest
     ): BookmarkResponse
 
-}
+    @GET("location/{locationId}/review")
+    suspend fun getReviewsByLocationId(
+        @Path("locationId") locationId: String
+        ): ReviewResponse
+    }

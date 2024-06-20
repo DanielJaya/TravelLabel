@@ -2,6 +2,7 @@ package com.example.travellabel.di
 
 import android.content.Context
 import com.example.travellabel.Data.api.Api
+import com.example.travellabel.Data.api.ApiService
 import com.example.travellabel.Data.pref.UserPreference
 import com.example.travellabel.Data.pref.UserRepository
 import com.example.travellabel.Data.pref.dataStore
@@ -14,5 +15,11 @@ object injection {
         val user = runBlocking { pref.getSession().first() }
         val apiservice = Api.getApiService(user.accessToken)
         return UserRepository.getInstance(apiservice,pref)
+    }
+
+    fun provideApiService(context: Context): ApiService {
+        val pref = UserPreference.getInstance(context.dataStore)
+        val user = runBlocking { pref.getSession().first() }
+        return Api.getApiService(user.accessToken)
     }
 }

@@ -1,43 +1,23 @@
 package com.example.travellabel.View.Fragment.DescLocationFragment
 
-import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import com.example.travellabel.Data.api.Api
 import com.example.travellabel.Data.pref.UserPreference
-import com.example.travellabel.Data.pref.UserRepository
 import com.example.travellabel.Data.pref.dataStore
 import com.example.travellabel.R
-import com.example.travellabel.Response.LocationsItem
-import com.example.travellabel.View.Bookmark.BookmarkActivity
-import com.example.travellabel.View.Forum.ForumActivity
-import com.example.travellabel.View.Main.MainActivity
 import com.example.travellabel.ViewModelFactory
 import com.example.travellabel.databinding.FragmentDescLocationBinding
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.example.travellabel.Data.Adapter.ReviewAdapter
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 
-// TODO: Rename parameter arguments, choose names that match
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [DescLocationFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class DescLocationFragment : BottomSheetDialogFragment() {
 
     companion object {
@@ -59,25 +39,29 @@ class DescLocationFragment : BottomSheetDialogFragment() {
     private var _binding: FragmentDescLocationBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: DescLocationViewModel by viewModels {
-        ViewModelFactory(UserRepository.getInstance(Api.getApiService(token), UserPreference.getInstance(requireContext().dataStore)))
-    }
-
     private lateinit var token: String
     private lateinit var locationId: String
 
+    private val viewModel: DescLocationViewModel by viewModels {
+        ViewModelFactory.getInstance(requireContext())
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         _binding = FragmentDescLocationBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        Log.d("DescLocationFragment", "onViewCreated called")
+
+        val adapter = ReviewAdapter(emptyList())
+        binding.reviewContainer.layoutManager = LinearLayoutManager(requireContext())
+        binding.reviewContainer.adapter = adapter
 
         val userPreference = UserPreference.getInstance(requireContext().dataStore)
         runBlocking {
@@ -92,6 +76,15 @@ class DescLocationFragment : BottomSheetDialogFragment() {
         binding.namaTempatWisata.text = label
         binding.descTempatWisata.text = description
 
+        viewModel.fetchReviews(locationId)
+
+        viewModel.reviews.observe(viewLifecycleOwner) { reviews ->
+            reviews?.let {
+                adapter.updateReviews(it)
+                Log.d("DescLocationFragment", "Reviews observed: ${it.size} reviews")
+            }
+        }
+
         binding.bookmark.setOnClickListener {
             if (viewModel.bookmarkStatus.value == true) {
                 viewModel.removeBookmark(locationId, token)
@@ -100,14 +93,15 @@ class DescLocationFragment : BottomSheetDialogFragment() {
             }
         }
 
-        viewModel.bookmarkStatus.observe(viewLifecycleOwner, Observer { isBookmarked ->
+        viewModel.bookmarkStatus.observe(viewLifecycleOwner) { isBookmarked ->
             if (isBookmarked) {
                 Glide.with(this).load(R.drawable.ic_yes_bookmark).into(binding.bookmark)
             } else {
                 Glide.with(this).load(R.drawable.ic_bookmark).into(binding.bookmark)
             }
-        })
+        }
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
