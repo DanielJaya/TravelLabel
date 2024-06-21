@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.liveData
 import com.example.travellabel.Data.api.ApiService
+import com.example.travellabel.Request.AddReplyRequest
 import com.example.travellabel.Request.BookmarkRequest
 import com.example.travellabel.Request.CreateDiscussionRequest
 import com.example.travellabel.Request.CreateLocationRequest
@@ -12,10 +13,12 @@ import com.example.travellabel.Request.LoginRequest
 import com.example.travellabel.Request.RegisterRequest
 import com.example.travellabel.Request.ReviewRequest
 import com.example.travellabel.Request.UpdateProfileRequest
+import com.example.travellabel.Response.AddReplyResponse
 import com.example.travellabel.Response.BookmarkResponse
 import com.example.travellabel.Response.CreateDiscussionResponse
 import com.example.travellabel.Response.CreateLocationResponse
 import com.example.travellabel.Response.GetDiscussionResponse
+import com.example.travellabel.Response.GetReplyResponse
 import com.example.travellabel.Response.GetUserResponse
 import com.example.travellabel.Response.LocationResponse
 import com.example.travellabel.Response.LoginResponse
@@ -142,6 +145,32 @@ class UserRepository private constructor(
         val getFlow = flow {
             try {
                 val getUserResponse = apiService.createDiscussion(createDiscussionRequest)
+                emit(Result.success(getUserResponse))
+            } catch (error: Exception) {
+                error.printStackTrace()
+                emit(Result.failure(error))
+            }
+        }.flowOn(Dispatchers.IO)
+        return getFlow
+    }
+
+    suspend fun getReply(discussionId: String): Flow<Result<GetReplyResponse>> {
+        val getFlow = flow {
+            try {
+                val getUserResponse = apiService.getReply(discussionId)
+                emit(Result.success(getUserResponse))
+            } catch (error: Exception) {
+                error.printStackTrace()
+                emit(Result.failure(error))
+            }
+        }.flowOn(Dispatchers.IO)
+        return getFlow
+    }
+
+    suspend fun addReply(discussionId: String, content: AddReplyRequest): Flow<Result<AddReplyResponse>> {
+        val getFlow = flow {
+            try {
+                val getUserResponse = apiService.addReply(discussionId, content)
                 emit(Result.success(getUserResponse))
             } catch (error: Exception) {
                 error.printStackTrace()

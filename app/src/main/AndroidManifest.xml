@@ -16,6 +16,12 @@
         android:theme="@style/Theme.TravelLabel"
         tools:targetApi="31">
         <activity
+            android:name=".View.AddReply.AddReplyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".View.Reply.ReplyActivity"
+            android:exported="false" />
+        <activity
             android:name=".View.AddReview.AddReviewActivity"
             android:exported="false" />
         <activity

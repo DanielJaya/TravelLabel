@@ -1,10 +1,8 @@
-package com.example.travellabel.View.Forum
+package com.example.travellabel.Data.Adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.travellabel.Response.DiscussionsItem
 import com.example.travellabel.databinding.ItemForumBinding
 
@@ -33,7 +31,7 @@ class ForumListAdapter : RecyclerView.Adapter<ForumListAdapter.ForumViewHolder>(
             }
 
             binding.apply {
-                namaOrang.text = data.creatorId
+                namaOrang.text = data.creator.username
                 judulForum.text = data.title
                 descForum.text = data.content
             }

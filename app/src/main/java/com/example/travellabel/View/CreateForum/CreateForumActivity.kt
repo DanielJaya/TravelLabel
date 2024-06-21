@@ -25,7 +25,7 @@ class CreateForumActivity : AppCompatActivity() {
         val factory = ViewModelFactory.getInstance(this)
         viewModel = ViewModelProvider(this, factory).get(CreateForumViewModel::class.java)
 
-        var locationId = intent.getStringExtra(ForumActivity.EXTRA_LOCATION)
+        var locationId = intent.getStringExtra(EXTRA_LOCATION)
         setupAction(locationId)
     }
 

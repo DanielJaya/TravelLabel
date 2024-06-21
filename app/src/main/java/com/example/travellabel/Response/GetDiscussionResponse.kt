@@ -14,10 +14,25 @@ data class GetDiscussionResponse(
     val status: String
 )
 
+data class CreatorDiscussion(
+
+    @field:SerializedName("id")
+    val id: String,
+
+    @field:SerializedName("email")
+    val email: String,
+
+    @field:SerializedName("username")
+    val username: String
+)
+
 data class DiscussionsItem(
 
     @field:SerializedName("createdAt")
     val createdAt: String,
+
+    @field:SerializedName("creator")
+    val creator: CreatorDiscussion,
 
     @field:SerializedName("locationId")
     val locationId: String,
@@ -32,5 +47,8 @@ data class DiscussionsItem(
     val title: String,
 
     @field:SerializedName("content")
-    val content: String
+    val content: String,
+
+    @field:SerializedName("updatedAt")
+    val updatedAt: String
 )

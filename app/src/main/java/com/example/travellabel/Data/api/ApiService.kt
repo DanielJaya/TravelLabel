@@ -1,5 +1,6 @@
 package com.example.travellabel.Data.api
 
+import com.example.travellabel.Request.AddReplyRequest
 import com.example.travellabel.Request.BookmarkRequest
 import com.example.travellabel.Request.CreateDiscussionRequest
 import com.example.travellabel.Request.CreateLocationRequest
@@ -7,6 +8,7 @@ import com.example.travellabel.Request.LoginRequest
 import com.example.travellabel.Request.RegisterRequest
 import com.example.travellabel.Request.ReviewRequest
 import com.example.travellabel.Request.UpdateProfileRequest
+import com.example.travellabel.Response.AddReplyResponse
 import com.example.travellabel.Response.CreateLocationResponse
 import com.example.travellabel.Response.GetUserResponse
 import com.example.travellabel.Response.LocationResponse
@@ -15,6 +17,7 @@ import com.example.travellabel.Response.RegisterResponse
 import com.example.travellabel.Response.BookmarkResponse
 import com.example.travellabel.Response.CreateDiscussionResponse
 import com.example.travellabel.Response.GetDiscussionResponse
+import com.example.travellabel.Response.GetReplyResponse
 import com.example.travellabel.Response.ReviewResponse
 import retrofit2.Call
 import retrofit2.http.Body
@@ -82,6 +85,17 @@ interface ApiService {
     suspend fun createDiscussion(
         @Body createDiscussionRequest: CreateDiscussionRequest
     ): CreateDiscussionResponse
+
+    @GET("discussion/{discussionId}")
+    suspend fun getReply(
+        @Path("discussionId") discussionId: String,
+    ): GetReplyResponse
+
+    @POST("discussion/{discussionId}")
+    suspend fun addReply(
+        @Path("discussionId") discussionId: String,
+        @Body addReplyRequest: AddReplyRequest
+    ): AddReplyResponse
 
     @GET("location/{locationId}/review")
     suspend fun getReviewsByLocationId(

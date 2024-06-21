@@ -2,11 +2,13 @@ package com.example.travellabel.View.Forum
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.travellabel.Data.Adapter.ForumListAdapter
+import com.example.travellabel.Response.DiscussionsItem
 import com.example.travellabel.View.CreateForum.CreateForumActivity
+import com.example.travellabel.View.Reply.ReplyActivity
 import com.example.travellabel.ViewModelFactory
 import com.example.travellabel.databinding.ActivityForumBinding
 
@@ -41,6 +43,19 @@ class ForumActivity : AppCompatActivity() {
         }
         viewModel.listDiscussion.observe(this) { listDiscussion ->
             val forumAdapter = ForumListAdapter()
+            forumAdapter.setOnItemClickCallback(object : ForumListAdapter.OnItemClickCallback{
+                override fun onItemClicked(data: DiscussionsItem) {
+                    Intent(this@ForumActivity, ReplyActivity::class.java).also {
+                        it.putExtra(ReplyActivity.EXTRA_NAMA, data.creator.username)
+                        it.putExtra(ReplyActivity.EXTRA_TITLE, data.title)
+                        it.putExtra(ReplyActivity.EXTRA_DESK, data.content)
+                        it.putExtra(ReplyActivity.EXTRA_ID, data.id)
+                        ViewModelFactory.clearInstance()
+                        startActivity(it)
+                    }
+                }
+            })
+
             forumAdapter.setList(listDiscussion)
             binding.apply {
                 val layoutManager = LinearLayoutManager(this@ForumActivity)
