@@ -27,7 +27,6 @@ class ForumActivity : AppCompatActivity() {
 
         var locationId = intent.getStringExtra(EXTRA_LOCATION)
         setupAction(locationId)
-//        navbar()
     }
 
     private fun setupAction(locationId: String?) {
@@ -69,44 +68,7 @@ class ForumActivity : AppCompatActivity() {
                 }
             }
         }
-
-
     }
-
-//    private fun navbar(){
-//        val navBottom = findViewById<BottomNavigationView>(R.id.navBottom)
-//        navBottom.selectedItemId = R.id.forum
-//
-//        navBottom.setOnItemSelectedListener { item ->
-//            when (item.itemId) {
-//                R.id.home -> {
-//                    val intent = Intent(this, MainActivity::class.java)
-//                    startActivity(intent)
-//                    true
-//                }
-//                R.id.map -> {
-//                    val intent = Intent(this, MapsActivity::class.java)
-//                    startActivity(intent)
-//                    true
-//                }
-//                R.id.bookmark -> {
-//                    val intent = Intent(this, BookmarkActivity::class.java)
-//                    startActivity(intent)
-//                    true
-//                }
-//                R.id.forum -> {
-//
-//                    true
-//                }
-//                R.id.profile -> {
-//                    val intent = Intent(this, ProfileActivity::class.java)
-//                    startActivity(intent)
-//                    true
-//                }
-//                else -> false
-//            }
-//        }
-//    }
 
     override fun onDestroy() {
         super.onDestroy()

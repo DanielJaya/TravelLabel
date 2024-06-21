@@ -84,11 +84,6 @@ class NoLocationFragment : Fragment() {
                     startActivity(intent)
                     true
                 }
-                R.id.forum -> {
-                    val intent = Intent(requireContext(), ForumActivity::class.java)
-                    startActivity(intent)
-                    true
-                }
                 else -> false
             }
         }

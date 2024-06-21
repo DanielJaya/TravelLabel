@@ -4,10 +4,20 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.travellabel.Response.DiscussionsItem
 import com.example.travellabel.Response.LocationsItem1
 import com.example.travellabel.databinding.ItemBookmarkBinding
 
 class BookmarkAdapter(private val bookmarkList: List<LocationsItem1?>) : RecyclerView.Adapter<BookmarkAdapter.BookmarkViewHolder>() {
+
+    private var onItemClickCallback: OnItemClickCallback? = null
+    fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
+        this.onItemClickCallback = onItemClickCallback
+    }
+    interface OnItemClickCallback {
+        fun onItemClicked(data: LocationsItem1)
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookmarkViewHolder {
         val binding = ItemBookmarkBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return BookmarkViewHolder(binding)

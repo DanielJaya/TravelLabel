@@ -17,11 +17,6 @@
         android:title="Map" />
 
     <item
-        android:id ="@+id/forum"
-        android:icon="@drawable/ic_forum"
-        android:title="Forum" />
-
-    <item
         android:id ="@+id/profile"
         android:icon="@drawable/person_24px"
         android:title="Profile" />

@@ -72,11 +72,6 @@ class BookmarkActivity : AppCompatActivity() {
 
                     true
                 }
-                R.id.forum -> {
-                    val intent = Intent(this, ForumActivity::class.java)
-                    startActivity(intent)
-                    true
-                }
                 R.id.profile -> {
                     val intent = Intent(this, ProfileActivity::class.java)
                     startActivity(intent)

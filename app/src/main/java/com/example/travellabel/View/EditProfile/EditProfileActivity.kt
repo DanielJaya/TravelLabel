@@ -148,11 +148,6 @@ class EditProfileActivity : AppCompatActivity() {
                     startActivity(intent)
                     true
                 }
-                R.id.forum -> {
-                    val intent = Intent(this, ForumActivity::class.java)
-                    startActivity(intent)
-                    true
-                }
                 R.id.profile -> {
                     true
                 }
