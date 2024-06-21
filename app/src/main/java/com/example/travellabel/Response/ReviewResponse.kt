@@ -19,7 +19,8 @@ data class Review(
 	val updatedAt: String,
 	val interactions: List<Any>,
 	val totalLike: Int,
-	val totalDislike: Int
+	val totalDislike: Int,
+	val user: User1
 )
 
 data class User1(
