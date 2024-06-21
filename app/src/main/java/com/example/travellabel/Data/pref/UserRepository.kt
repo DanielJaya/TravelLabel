@@ -60,6 +60,10 @@ class UserRepository private constructor(
         userPreference.logout()
     }
 
+    suspend fun getLoc(): LocationResponse {
+        return apiService.getLocation()
+    }
+
     suspend fun getLocation() : LiveData<Output<LocationResponse>> = liveData {
         emit(Output.Loading)
         try {
@@ -69,10 +73,11 @@ class UserRepository private constructor(
             } else {
                 emit(Output.Error(response.message.toString()))
             }
-        } catch (e: Exception){
+        } catch (e: Exception) {
             emit(Output.Error(e.message.toString()))
         }
     }
+
 
     suspend fun getUser(username: String): Flow<Result<GetUserResponse>> {
         val getFlow = flow {

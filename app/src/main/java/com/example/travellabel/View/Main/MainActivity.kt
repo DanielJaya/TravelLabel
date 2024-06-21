@@ -6,6 +6,10 @@ import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.travellabel.Data.Adapter.LocationAdapter
+import com.example.travellabel.Data.pref.Output
 import com.example.travellabel.R
 import com.example.travellabel.View.Bookmark.BookmarkActivity
 import com.example.travellabel.View.Forum.ForumActivity
@@ -24,6 +28,8 @@ class MainActivity : AppCompatActivity() {
         ViewModelFactory.getInstance(this)
     }
 
+    private lateinit var locationAdapter: LocationAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -31,12 +37,21 @@ class MainActivity : AppCompatActivity() {
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setupView()
         navbar()
         getSession()
     }
 
     private fun setupAction() {
 
+    }
+
+    private fun setupView(){
+        locationAdapter = LocationAdapter()
+        binding.rvMain.apply {
+            layoutManager = LinearLayoutManager(this@MainActivity)
+            adapter = locationAdapter
+        }
     }
 
     private fun navbar() {
@@ -80,11 +95,21 @@ class MainActivity : AppCompatActivity() {
             Log.d("MainActivity", "User session observed: $user")
             if (!user.isLogin) {
                 navigateToWelcomeActivity()
-            } else if (user.isLogin) {
-//                token = user.token
-//                binding.topAppBar.title = "Token Main : $token"
-//                setupView()
-                setupAction()
+            } else {
+                viewModel.getLocation().observe(this, Observer { result ->
+                    when (result) {
+                        is Output.Success -> {
+                            Log.d("MainActivity", "Locations fetched successfully")
+                            locationAdapter.setLocations(result.value.locations)
+                        }
+                        is Output.Error -> {
+                            Log.e("MainActivity", "Error: ${result.error}")
+                        }
+                        is Output.Loading -> {
+                            Log.d("MainActivity", "Loading locations...")
+                        }
+                    }
+                })
             }
         }
     }
