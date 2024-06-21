@@ -6,7 +6,8 @@
     android:padding="16dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".View.AddReview.AddReviewActivity">
+    tools:context=".View.AddReview.AddReviewActivity"
+    android:background="@drawable/bg_main">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/descReviewLayout"
